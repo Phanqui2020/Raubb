@@ -1,9 +1,14 @@
 package cofeas.dev.raubb.Activity;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import cofeas.dev.raubb.Adapter.RauLaAdapter;
 import cofeas.dev.raubb.Adapter.RauCuAdapter;
 import cofeas.dev.raubb.Model.SanPham;
 import cofeas.dev.raubb.R;
@@ -36,8 +40,9 @@ public class RauCu extends AppCompatActivity {
     ListView lvRaucu;
     ArrayList<SanPham> arrRaucu;
     RauCuAdapter raucuAdapter;
-    int idrc =0;
-    int page =1;
+    int idrc = 0;
+    int page = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +51,8 @@ public class RauCu extends AppCompatActivity {
         addControls();
         GetIdLoaiSP();
         actionToolbar();
-        getData(page);
+        getData();
         lvItemClick();
-
 
 
     }
@@ -58,26 +62,26 @@ public class RauCu extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ChiTietSanPham.class);
-                intent.putExtra("tt",arrRaucu.get(position));
+                intent.putExtra("tt", arrRaucu.get(position));
                 startActivity(intent);
             }
         });
 
     }
 
-    private void getData(int Page) {
+    private void getData() {
 
         //tạo phương thức gửi lên server
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         //đường dẫn
-        String line = uri.raula + String.valueOf(Page);
+      // String line = uri.raula + String.valueOf(Page);
         //gửi lên server và đọc dữ liệu dưới dạng json, trả về ở listener
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, line, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, uri.raula, new Response.Listener<String>() {
             @Override
             //chuỗi thông qua biến response
             public void onResponse(String response) {
                 //khởi tạo các biến
-                int IDLoaiSanPham= 0;
+                int IDLoaiSanPham = 0;
                 int IDSanPham = 0;
                 String TenSanPham = "";
                 String ThongTinSanPham = "";
@@ -86,11 +90,11 @@ public class RauCu extends AppCompatActivity {
                 String HinhAnh = "";
                 int IDKhuyenMai = 0;
                 //nếu có dữ liệu
-                if(response != null){
+                if (response != null) {
                     try {
                         // đọc từ array rồi đọc lần lượt các object
                         JSONArray jsonArray = new JSONArray(response);
-                        for (int i =0;i<response.length();i++){
+                        for (int i = 0; i < response.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             IDSanPham = jsonObject.getInt("idsp");
                             IDLoaiSanPham = jsonObject.getInt("idlsp");
@@ -104,6 +108,7 @@ public class RauCu extends AppCompatActivity {
                             arrRaucu.add(new SanPham(IDSanPham, IDLoaiSanPham, TenSanPham, ThongTinSanPham, Gia, DonVi, HinhAnh, IDKhuyenMai));
                             //cập nhật lại bản vẽ
                             raucuAdapter.notifyDataSetChanged();
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -117,14 +122,14 @@ public class RauCu extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             //post lên
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //<String,String> s1 key, s2 là giá trị truyền lên
-                HashMap<String,String> param = new HashMap<String,String>();
+                HashMap<String, String> param = new HashMap<String, String>();
                 //key trùng với file php
-                param.put("idloaisanpham",String.valueOf(idrc));
+                param.put("idloaisanpham", String.valueOf(idrc));
                 return param;
             }
         };
@@ -142,16 +147,32 @@ public class RauCu extends AppCompatActivity {
         });
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.cart, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menucart:
+                Intent intent = new Intent(getApplicationContext(), GioHang.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void GetIdLoaiSP() {
-        idrc = getIntent().getIntExtra("idloaisanpham",-1);
+        idrc = getIntent().getIntExtra("idloaisanpham", -1);
         Log.d("IDLoaisnaPham", idrc + "");
     }
+
 
     private void addControls() {
         tbRaucu = findViewById(R.id.tbRaucu);
         lvRaucu = findViewById(R.id.lvRaucu);
         arrRaucu = new ArrayList<>();
-        raucuAdapter = new RauCuAdapter(getApplicationContext(),arrRaucu);
+        raucuAdapter = new RauCuAdapter(getApplicationContext(), arrRaucu);
         lvRaucu.setAdapter(raucuAdapter);
     }
 }

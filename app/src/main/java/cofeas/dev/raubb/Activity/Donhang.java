@@ -3,10 +3,14 @@ package cofeas.dev.raubb.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,17 +31,22 @@ import java.util.Map;
 import cofeas.dev.raubb.R;
 import cofeas.dev.raubb.ultil.uri;
 
-public class ThongTinKhachHang extends AppCompatActivity {
 
-    EditText edtTenKH,edtDiachi,edtSDT;
+public class Donhang extends AppCompatActivity {
+
+    EditText edtDiachi;
     Button btnXacnhan,btnBack;
+    TextView txttotal,txttenkhachhang,txtiduser;
+    long tongtien = 0;
+    Toolbar tbdonhang;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thongtinkhachhang);
+        setContentView(R.layout.activity_donhang);
 
         addControls();
         addEvents();
+        actionToolbar();
         Confirm();
     }
 
@@ -55,11 +64,13 @@ public class ThongTinKhachHang extends AppCompatActivity {
         });
     }
 
+
     private void Confirm() {
-        final String ten = edtTenKH.getText().toString().trim();
-        final String sdt = edtSDT.getText().toString().trim();
+        final String ten = txttenkhachhang.getText().toString().trim();
+        final String id = txtiduser.getText().toString().trim();
         final String dc = edtDiachi.getText().toString().trim();
-        if(ten.length()>0 && sdt.length()>0 && dc.length()>0){
+        final String total = txttotal.getText().toString().trim();
+        if(ten.length()>0 && id.length()>0 && dc.length()>0){
             final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             final StringRequest stringRequest = new StringRequest(Request.Method.POST, uri.kh, new Response.Listener<String>() {
                 @Override
@@ -70,17 +81,11 @@ public class ThongTinKhachHang extends AppCompatActivity {
                         StringRequest request = new StringRequest(Request.Method.POST, uri.ctkh, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-//                                if(response.equals("1")){
                                     MainActivity.arrCart.clear();
-                                    Toast.makeText(getApplicationContext(),"mua hàng thành công",Toast.LENGTH_LONG).show();
-
+                                    Toast.makeText(getApplicationContext(),"mua hàng thành công",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"vui lòng đợi chúng tôi sẽ gọi lại xác nhận đơn hàng!",Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(getApplicationContext(),"Mời bạn đợi trong lúc chúng tôi gọi lại xác nhận!",Toast.LENGTH_LONG).show();
-//
-//                                }else {
-//                                    Toast.makeText(getApplicationContext(),"dữ liệu giỏ hàng lỗi",Toast.LENGTH_LONG).show();
-//                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -122,22 +127,57 @@ public class ThongTinKhachHang extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String,String> hashMap = new HashMap<String,String>();
                     hashMap.put("tenkhachhang",ten);
-                    hashMap.put("sodienthoai",sdt);
+                    hashMap.put("iduser",id);
                     hashMap.put("diachi",dc);
+                    hashMap.put("tongtien",total);
                     return hashMap;
                 }
             };
             requestQueue.add(stringRequest);
         }else {
-            Toast.makeText(getApplicationContext(),"Bạn phải nhập đầy đủ thông tin",Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(),"Hãy nhập đầy đủ thông tin",Toast.LENGTH_LONG).show();
         }
     }
 
+    private void actionToolbar() {
+        setSupportActionBar(tbdonhang);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        tbdonhang.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.logout, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuLogout:
+                SharedPrefManager.getInstance(this).logout();
+                finish();
+                startActivity(new Intent(getApplicationContext(), Signin.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void addControls() {
-        edtTenKH = findViewById(R.id.edtTenKH);
+        tbdonhang = findViewById(R.id.tbdonhang);
         edtDiachi = findViewById(R.id.edtDiachi);
-        edtSDT = findViewById(R.id.edtSDT);
         btnBack = findViewById(R.id.btnBack);
         btnXacnhan = findViewById(R.id.btnXacnhan);
+        txttenkhachhang = findViewById(R.id.txttenkhachhang);
+        txttenkhachhang.setText(SharedPrefManager.getInstance(Donhang.this).getUsername());
+        txtiduser = findViewById(R.id.txtiduser);
+        txtiduser.setText(String.valueOf(SharedPrefManager.getInstance(Donhang.this).getIduser()));
+        txttotal = findViewById(R.id.txttotal);
+        for(int i = 0; i<MainActivity.arrCart.size();i++){
+            tongtien += MainActivity.arrCart.get(i).getGiasp();
+        }
+        txttotal.setText(tongtien + "");
     }
 }

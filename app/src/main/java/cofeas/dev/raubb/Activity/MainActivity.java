@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.android.volley.RequestQueue;
@@ -29,7 +27,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -50,6 +47,7 @@ import cofeas.dev.raubb.ultil.uri;
 public class MainActivity extends AppCompatActivity {
 
     Toolbar tbMain;
+    TextView txtTenkh;
     DrawerLayout dlMain;
     ViewFlipper vfDiscount;
     RecyclerView rvNewPro;
@@ -113,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent3);
                         dlMain.closeDrawer(GravityCompat.START);
                         break;
+                    case 4:
+                        Intent intent4 = new Intent(MainActivity.this, About.class);
+                        startActivity(intent4);
+                        dlMain.closeDrawer(GravityCompat.START);
+                        break;
                 }
 
             }
@@ -142,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     lspAdapter.notifyDataSetChanged();
-                    arrLsp.add(4, new LoaiSanPham(0,"Feedback","https://www.mithikode.com/images/icons/about_us.png"));
-                    arrLsp.add(5, new LoaiSanPham(0,"About us","http://1.bp.blogspot.com/-6ZFNNv5tPXQ/Weext4PgRQI/AAAAAAAAtC8/S8V0w4vuNRUJUvK5UGnwn-n4qFiAP8V-wCK4BGAYYCw/s1600/checkmark.png"));
                 }
             }
         }, new Response.ErrorListener() {
@@ -216,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         vfDiscount.setOutAnimation(anim_soR);
 
 
+
     }
 
     private void actionBar() {
@@ -232,16 +234,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.login,menu);
+        getMenuInflater().inflate(R.menu.logout,menu);
+        getMenuInflater().inflate(R.menu.about,menu);
+        getMenuInflater().inflate(R.menu.cart,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menucart:
-                Intent intent = new Intent(getApplicationContext(), cofeas.dev.raubb.Activity.GioHang.class);
+            case R.id.about:
+                Intent intent = new Intent(getApplicationContext(), About.class);
                 startActivity(intent);
+                break;
+            case R.id.menuLogin:
+                Intent intent1 = new Intent(getApplicationContext(), Signin.class);
+                startActivity(intent1);
+                break;
+            case R.id.menuLogout:
+                SharedPrefManager.getInstance(this).logout();
+                Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent3);
+                txtTenkh.setText(SharedPrefManager.getInstance(MainActivity.this).getUsername());
+                break;
+            case R.id.menucart:
+                Intent intent2 = new Intent(getApplicationContext(), cofeas.dev.raubb.Activity.GioHang.class);
+                startActivity(intent2);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -252,6 +271,8 @@ public class MainActivity extends AppCompatActivity {
         lvMain = findViewById(R.id.lvMain);
         nvMain = (NavigationView) findViewById(R.id.nvMain);
         rvNewPro = (RecyclerView) findViewById(R.id.rvNewPro);
+        txtTenkh = findViewById(R.id.txtTenkh);
+        txtTenkh.setText(SharedPrefManager.getInstance(MainActivity.this).getUsername());
         //MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.svSearch);
 
         dsSanPham = new ArrayList<>();

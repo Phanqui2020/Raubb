@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -45,10 +47,24 @@ public class RauMam extends AppCompatActivity {
         addControls();
         GetIdLoaiSP();
         actionToolbar();
-        getData(page);
+        getData();
         lvItemClick();
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.cart,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menucart:
+                Intent intent = new Intent(getApplicationContext(), GioHang.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void lvItemClick() {
         lvRaumam.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -62,10 +78,9 @@ public class RauMam extends AppCompatActivity {
 
     }
 
-    private void getData(int Page) {
+    private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        String line = uri.raula + String.valueOf(Page);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, line, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, uri.raula, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 int IDLoaiSanPham= 0;
@@ -128,6 +143,7 @@ public class RauMam extends AppCompatActivity {
             }
         });
     }
+
 
     private void GetIdLoaiSP() {
         idrm = getIntent().getIntExtra("idloaisanpham",-1);

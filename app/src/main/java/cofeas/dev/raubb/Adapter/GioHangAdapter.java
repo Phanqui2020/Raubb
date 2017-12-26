@@ -1,7 +1,6 @@
 package cofeas.dev.raubb.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -83,17 +80,13 @@ public class GioHangAdapter extends BaseAdapter {
                 .into(viewHolder.imgGiohang);
         viewHolder.btnValue.setText(gioHang.getSoluongsp()+ "");
         int sl = Integer.parseInt(viewHolder.btnValue.getText().toString());
-        if(sl>= 5){
+        if(sl>= 10){
             viewHolder.btnPlus.setVisibility(View.INVISIBLE);
             viewHolder.btnMinus.setVisibility(View.VISIBLE);
-//        }else if(sl<=1)
-//        {
-//            viewHolder.btnMinus.setVisibility(View.INVISIBLE);
         }else if(sl<=1)
         {
             viewHolder.btnMinus.setVisibility(View.INVISIBLE);
-            viewHolder.btnPlus.setVisibility(View.VISIBLE);
-        }else
+        }else if(sl>=1)
         {
             viewHolder.btnMinus.setVisibility(View.VISIBLE);
             viewHolder.btnPlus.setVisibility(View.VISIBLE);
@@ -111,8 +104,8 @@ public class GioHangAdapter extends BaseAdapter {
                 MainActivity.arrCart.get(position).setGiasp(giamoinhat);
                 DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
                 finalViewHolder.txtGiagh.setText(decimalFormat.format(giamoinhat)+ "vnđ");
-                cofeas.dev.raubb.Activity.GioHang.EvenUltil();
-                if(slmoinhat>4){
+                cofeas.dev.raubb.Activity.GioHang.Total();
+                if(slmoinhat>9){
                     finalViewHolder.btnPlus.setVisibility(View.INVISIBLE);
                     finalViewHolder.btnMinus.setVisibility(View.VISIBLE);
                     finalViewHolder.btnValue.setText(String.valueOf(slmoinhat));
@@ -134,8 +127,8 @@ public class GioHangAdapter extends BaseAdapter {
                 MainActivity.arrCart.get(position).setGiasp(giamoinhat);
                 DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
                 finalViewHolder.txtGiagh.setText(decimalFormat.format(giamoinhat)+ "vnđ");
-                cofeas.dev.raubb.Activity.GioHang.EvenUltil();
-                if(slmoinhat>2){
+                cofeas.dev.raubb.Activity.GioHang.Total();
+                if(slmoinhat<2){
                     finalViewHolder.btnPlus.setVisibility(View.VISIBLE);
                     finalViewHolder.btnMinus.setVisibility(View.INVISIBLE);
                     finalViewHolder.btnValue.setText(String.valueOf(slmoinhat));

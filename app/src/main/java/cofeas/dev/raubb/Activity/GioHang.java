@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import cofeas.dev.raubb.Adapter.GioHangAdapter;
 import cofeas.dev.raubb.R;
@@ -41,7 +40,7 @@ public class GioHang extends AppCompatActivity{
         addEvents();
         actionToolbar();
         CheckData();
-        EvenUltil();
+        Total();
         deleteProduct();
     }
 
@@ -51,14 +50,20 @@ public class GioHang extends AppCompatActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
+
             }
         });
         btnThanhtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(MainActivity.arrCart.size()>0){
-                    Intent intent = new Intent(getApplicationContext(),ThongTinKhachHang.class);
-                    startActivity(intent);
+                    if(SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
+                        Intent intent = new Intent(getApplicationContext(),Donhang.class);
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(getApplicationContext(),Signin.class);
+                        startActivity(intent);
+                    }
 
                 }else {
                     Toast.makeText(getApplicationContext(),"Giỏ hàng trống",Toast.LENGTH_LONG).show();
@@ -82,13 +87,13 @@ public class GioHang extends AppCompatActivity{
                         }else {
                             MainActivity.arrCart.remove(position);
                             gioHangAdapter.notifyDataSetChanged();
-                            EvenUltil();
+                            Total();
                             if(MainActivity.arrCart.size()<=0){
                                 txtThongbao.setVisibility(View.VISIBLE);
                             }else {
                                 txtThongbao.setVisibility(View.INVISIBLE);
                                 gioHangAdapter.notifyDataSetChanged();
-                                EvenUltil();
+                                Total();
                             }
                         }
                     }
@@ -97,7 +102,7 @@ public class GioHang extends AppCompatActivity{
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
                           gioHangAdapter.notifyDataSetChanged();
-                          EvenUltil();
+                          Total();
                       }
                   });
                   builder.show();
@@ -106,13 +111,13 @@ public class GioHang extends AppCompatActivity{
         });
     }
 
-    public static void EvenUltil() {
+    public static void Total() {
         long tongtien = 0;
         for(int i = 0; i<MainActivity.arrCart.size();i++){
             tongtien += MainActivity.arrCart.get(i).getGiasp();
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        txtTongtien.setText(decimalFormat.format(tongtien) + "vnđ");
+        txtTongtien.setText(decimalFormat.format(tongtien) + " vnđ");
     }
 
     private void CheckData() {

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:title="Rau Ăn Lá">
+        app:title="Rau Mầm">
 
     </android.support.v7.widget.Toolbar>
 

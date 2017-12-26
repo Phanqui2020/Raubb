@@ -11,7 +11,7 @@
         android:id="@+id/tbRaucu"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryDark"
         app:title="Rau Ăn Củ">
 
     </android.support.v7.widget.Toolbar>

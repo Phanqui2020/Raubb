@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import cofeas.dev.raubb.Activity.RauCu;
 import cofeas.dev.raubb.Model.SanPham;
@@ -24,10 +25,13 @@ import cofeas.dev.raubb.R;
 public class RauCuAdapter extends BaseAdapter {
     Context context;
     ArrayList<SanPham> arrRauCu;
+    ArrayList<SanPham> arrsearch;
 
     public RauCuAdapter(Context context, ArrayList<SanPham> arrRauCu) {
         this.context = context;
         this.arrRauCu = arrRauCu;
+        this.arrsearch = new ArrayList<SanPham>();
+        this.arrsearch.addAll(arrRauCu);
     }
 
     @Override
@@ -74,5 +78,19 @@ public class RauCuAdapter extends BaseAdapter {
                 .error(R.drawable.error)
                 .into(viewHolder.imgRaucu);
         return view;
+    }
+
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        if (charText.length() == 0) {
+            arrRauCu.addAll(arrsearch);
+        } else {
+            for (SanPham sp : arrsearch) {
+                if (sp.getTenSanPham().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    arrRauCu.add(sp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

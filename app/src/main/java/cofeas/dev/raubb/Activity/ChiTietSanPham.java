@@ -57,7 +57,7 @@ public class ChiTietSanPham extends AppCompatActivity {
 
 
     private void CatchEventSpinner() {
-        Integer [] sl = new Integer[]{1,2,3,4,5};
+        Integer [] sl = new Integer[]{1,2,3,4,5,5,6,7,8,9,10};
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_dropdown_item,sl);
         spinner.setAdapter(arrayAdapter);
     }
@@ -75,7 +75,7 @@ public class ChiTietSanPham extends AppCompatActivity {
 
         txtTenctsp.setText(Tenchitiet);
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        txtGiactsp.setText(decimalFormat.format(Giachitiet) + " vnđ");
+        txtGiactsp.setText(decimalFormat.format(Giachitiet) + " vnđ/kg");
         txtmota.setText(thongtinsanpham);
         Picasso.with(getApplicationContext()).load(Hinhanhchitiet).into(imgctsp);
 
@@ -142,20 +142,6 @@ public class ChiTietSanPham extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menucart:
-                Intent intent = new Intent(getApplicationContext(), cofeas.dev.raubb.Activity.GioHang.class);
-                startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void addControls() {
         toolbarctsp = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarctsp);

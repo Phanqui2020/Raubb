@@ -5,63 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login"
+    android:weightSum="10"
     android:orientation="vertical"
-    tools:context="cofeas.dev.raubb.Activity.ThongTinKhachHang"
-    android:weightSum="10">
+    tools:context="cofeas.dev.raubb.Activity.Donhang">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbdonhang"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        app:title="Đơn hàng">
+
+    </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:layout_weight="7"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/holo_blue_bright"
-            android:gravity="center"
-            android:text="Thông tin khách hàng"
-            android:textSize="35dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="Họ và tên"
+            android:text="Xin chào!"
             android:textColor="@color/cardview_light_background"
             android:textSize="20dp" />
 
-        <EditText
-            android:id="@+id/edtTenKH"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textColor="@color/cardview_light_background" />
-
         <TextView
+            android:id="@+id/txttenkhachhang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:text="Số điện thoại"
-            android:textColor="@color/cardview_light_background"
+            android:text="name"
+            android:textColor="@android:color/holo_green_light"
             android:textSize="20dp" />
 
-        <EditText
-            android:id="@+id/edtSDT"
+        <TextView
+            android:id="@+id/txtiduser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textColor="@color/cardview_light_background" />
+            android:textSize="20dp" />
+
 
         <TextView
             android:id="@+id/textView2"
@@ -69,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:text="Địa chỉ"
+            android:text="Địa chỉ giao hàng"
             android:textColor="@color/cardview_light_background"
             android:textSize="20dp" />
 
@@ -79,35 +63,70 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="Nhập địa chỉ giao hàng"
             android:inputType="textPersonName"
-            android:textColor="@color/cardview_light_background" />
+            android:textColor="@color/cardview_light_background"
+            android:textColorHint="@color/colorPrimaryDark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="Tổng giá đơn hàng: "
+            android:textColor="@color/cardview_light_background"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/txttotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="Total"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="20dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
-        android:layout_weight="3"
+        android:layout_weight="1"
         android:orientation="horizontal">
+
         <Button
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="70dp"
             android:id="@+id/btnXacnhan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="30dp"
             android:padding="10dp"
-            android:textSize="18dp"
-            android:text="Xác nhận"/>
+            android:text="Xác nhận"
+            android:textSize="18dp" />
+
         <Button
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textSize="18dp"
-            android:text="Trở về"/>
+            android:text="Trở về"
+            android:textSize="18dp" />
     </LinearLayout>
 
 </LinearLayout>

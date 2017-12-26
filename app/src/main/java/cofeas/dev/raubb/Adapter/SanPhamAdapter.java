@@ -44,7 +44,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ItemHold
         final SanPham sanPham = arrsp.get(position);
         holder.txtTenSP.setText(sanPham.getTenSanPham());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtGia.setText(decimalFormat.format(sanPham.getGia()) + "vnđ");
+        holder.txtGia.setText(decimalFormat.format(sanPham.getGia()) + "vnđ/kg");
         Picasso.with(context).load(sanPham.getHinhAnh())
                 .placeholder(R.drawable.noimg)
                 .error(R.drawable.error)
